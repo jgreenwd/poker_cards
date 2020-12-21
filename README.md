@@ -1,4 +1,8 @@
 # Poker_Cards
+
+#### TODO:
+- add Ace-low Straight, Straight-Flush to _evaluate_hand
+
 Python Poker Cards for Flask backend<br>
 
 This repository is designed to randomly create and evaluate _n-_ sized hands (1 <= _n-_ <= 7). Evaluations are based on standard 5-card poker hands with no wildcards:
