@@ -19,3 +19,5 @@ __Classes__:<br>
 - __Card__ - Basic unit of game play; can represent any value in a standard 52-card deck
 - __Hand__ - Combination of Cards; For hands larger than 5, Texas Hold'Em rules are applied (best 5-card hand out of all in hand)
 - __Deck__ - Mechanism for creating, shuffling, dealing, and collecting cards
+
+![UML Class Diagram](https://raw.githubusercontent.com/jgreenwd/poker_cards/main/Card%20game%20UML.png)
