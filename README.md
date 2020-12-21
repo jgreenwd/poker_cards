@@ -1,7 +1,7 @@
 # Poker_Cards
 Python Poker Cards for Flask backend<br>
 
-This repository is designed to randomly create and evaluate hands of _n-_ size (1 <= _n-_ <= 7). Evaluations are based on standard poker hands with no wildcards:
+This repository is designed to randomly create and evaluate _n-_ sized hands (1 <= _n-_ <= 7). Evaluations are based on standard 5-card poker hands with no wildcards:
 
 __Hands__:<br>
 - _Straight Flush_
