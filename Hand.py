@@ -57,12 +57,9 @@ class Hand:
 
         # split ties
         if self.value == other.value:
-            cards_a = self.get_cards()
-            cards_b = other.get_cards()
-
             # compare card Ranks (already sorted from _set_value)
-            for i in range(len(cards_a)):
-                if cards_a[i] < cards_b[i]:
+            for a, b in zip(self.get_cards(), other.get_cards()):
+                if a < b:
                     return True
 
             return False
