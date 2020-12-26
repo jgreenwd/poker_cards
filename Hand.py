@@ -102,8 +102,6 @@ class Hand:
         if len(hand) == 0:
             return None
 
-        ranks = tuple(hand.get_cards().count(card) for card in hand.get_cards())
-
         if len(hand) == 5:
             straight = Hand._is_straight(hand)
             flush = Hand._is_flush(hand)
@@ -115,6 +113,8 @@ class Hand:
             elif straight:
                 return Rank.STRAIGHT
 
+        ranks = tuple(hand.get_cards().count(card) for card in hand.get_cards())
+            
         if 4 in ranks:
             return Rank.FOUR_OF_A_KIND
         elif 3 in ranks and 2 in ranks or ranks.count(3) == 6:
