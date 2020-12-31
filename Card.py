@@ -18,22 +18,9 @@ class Card:
         self._suit = suit.upper()
 
     def __repr__(self):
-        """ Return representation of Card object """
         return f'{self.__class__.__name__}({self._rank}:{self._suit})'
 
     def __str__(self):
-        """ Return 'spoken' version of card """
-        if self._rank == Rank.ACE:
-            rank = 'Ace'
-        elif self._rank == Rank.JACK:
-            rank = 'Jack'
-        elif self._rank == Rank.QUEEN:
-            rank = 'Queen'
-        elif self._rank == Rank.KING:
-            rank = 'King'
-        else:
-            rank = self._rank.value
-
         if self._suit == 'S':
             suit = 'Spades'
         elif self._suit == 'H':
@@ -43,7 +30,7 @@ class Card:
         else:
             suit = 'Diamonds'
 
-        return f'<{rank:5} of {suit:8}> '
+        return f'<{str(self._rank)[5:].title():5} of {suit:8}> '
 
     def __eq__(self, other):
         return self._rank == other.get_rank()
