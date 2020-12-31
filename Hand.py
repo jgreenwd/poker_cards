@@ -73,15 +73,18 @@ class Hand:
         return self._cards
 
     def draw(self, card):
-        """ Add a (Card) to the Hand """
+        """ Add a (Card) to the Hand
+
+        :param card: (Card)
+        """
         self._cards.append(card)  # add card to hand
         self.value = self._set_value()  # determine value
 
     def discard(self, index=0):
         """ Remove a (Card) from the Hand at given index (default 0)
 
-            :param index: (Integer)
-            :return: (Card)
+        :param index: (Integer)
+        :return: (Card)
         """
         try:
             card = self._cards.pop(index)
