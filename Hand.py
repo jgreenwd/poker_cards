@@ -67,18 +67,24 @@ class Hand:
         return self.value < other.value
 
     def get_cards(self):
-        """ Return reference to Cards in Hand """
+        """ Get reference to Cards in Hand
+
+        :return: List(...Cards) """
         return self._cards
 
     def draw(self, card):
-        """ Add a Card to the Hand """
-        self._cards.append(card)        # add card to hand
+        """ Add a (Card) to the Hand """
+        self._cards.append(card)  # add card to hand
         self.value = self._set_value()  # determine value
 
-    def discard(self, idx=0):
-        """ Remove and Return a Card from the Hand """
+    def discard(self, index=0):
+        """ Remove a (Card) from the Hand at given index (default 0)
+
+            :param index: (Integer)
+            :return: (Card)
+        """
         try:
-            card = self._cards.pop(idx)
+            card = self._cards.pop(index)
             self.value = self._set_value()
             return card
 
@@ -87,22 +93,37 @@ class Hand:
 
     @staticmethod
     def _is_straight(hand):
-        # Return Boolean: is the current Hand a straight
+        """ If hand is a Straight, return True
+
+        :param hand: (Hand)
+        :return: (Boolean)
+        """
         # straight == Ranks of n, n-1, n-2, n-3, n-4
-        return all((Rank(hand[x].get_rank()) == Rank(hand[x + 1].get_rank() + 1) for x in range(len(hand)-1)))
+        return all((Rank(hand[x].get_rank()) == Rank(hand[x + 1].get_rank() + 1) for x in range(len(hand) - 1)))
 
     @staticmethod
     def _is_flush(hand):
-        # Return Boolean: is the current Hand a flush
+        """ If hand is a Flush, return True
+
+        :param hand: (Hand)
+        :return: (Boolean)
+        """
+        # flush == Suit(0) = Suit(1) .... = Suit(n)
         suit = hand.get_cards()[0].get_suit()
         return all((card.get_suit() == suit for card in hand.get_cards()[1:]))
 
     @staticmethod
     def _evaluate_hand(hand):
+        """ Determine value of the given hand.
+
+        :param hand: (Hand)
+        :return: (Rank)
+        """
         if len(hand) == 0:
             return None
 
         if len(hand) == 5:
+            # Flushes, Straights, & Straight-Flushes are only possible in Hands of 5 Cards
             straight = Hand._is_straight(hand)
             flush = Hand._is_flush(hand)
 
@@ -113,11 +134,13 @@ class Hand:
             elif straight:
                 return Rank.STRAIGHT
 
+        # create a tuple of the ranks for each card in the hand
         ranks = tuple(hand.get_cards().count(card) for card in hand.get_cards())
-            
+
         if 4 in ranks:
             return Rank.FOUR_OF_A_KIND
-        elif 3 in ranks and 2 in ranks or ranks.count(3) == 6:
+        elif 3 in ranks and 2 in ranks or ranks.count(3) >= 6:
+            # 2nd condition covers hands with >5 Cards
             return Rank.FULL_HOUSE
         elif 3 in ranks:
             return Rank.THREE_OF_A_KIND
@@ -129,7 +152,10 @@ class Hand:
             return hand.get_cards()[0].get_rank()
 
     def _set_value(self):
-        """ Return current Rank of Hand """
+        """ Set value (Rank) of Hand 
+        
+        :return: (Rank)
+        """
         if len(self._cards) == 0:
             return None
 
