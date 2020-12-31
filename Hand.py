@@ -53,7 +53,7 @@ class Hand:
 
     def __lt__(self, other):
         if len(self._cards) != len(other):
-            raise ValueError(f'Hands must have same length.')
+            raise ValueError(f'Hands must have equal length.')
 
         # split ties
         if self.value == other.value:
@@ -152,8 +152,8 @@ class Hand:
             return hand.get_cards()[0].get_rank()
 
     def _set_value(self):
-        """ Set value (Rank) of Hand 
-        
+        """ Set value (Rank) of Hand
+
         :return: (Rank)
         """
         if len(self._cards) == 0:
