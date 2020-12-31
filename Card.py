@@ -39,9 +39,9 @@ class Card:
         return self._rank < other.get_rank()
 
     def get_rank(self):
-        """ Return value of Card's Rank """
+        """ :return: Card's (Rank) """
         return self._rank
 
     def get_suit(self):
-        """ Return value of Card's suit """
+        """ :return: Card's Suit (String) """
         return self._suit
