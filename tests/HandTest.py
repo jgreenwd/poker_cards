@@ -177,7 +177,7 @@ class HandTest(unittest.TestCase):
         # edge case
         for i in range(66, 67):
             self.assertLess(test_hands[i], test_hands[i + 2])
-            # self.assertGreater(test_hands[i + 2], test_hands[i])
+            self.assertGreater(test_hands[i + 2], test_hands[i])
 
 
 if __name__ == '__main__':
