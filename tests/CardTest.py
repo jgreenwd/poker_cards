@@ -37,13 +37,13 @@ class CardTest(unittest.TestCase):
         suit = choice(Card.VALID_SUITS)
         card1 = Card(choice(Card.VALID_RANKS), suit)
         card2 = Card(choice(Card.VALID_RANKS), suit)
-        self.assertEqual(card1.get_suit(), card2.get_suit())
+        self.assertEqual(card1.suit, card2.suit)
 
     def test_different_suit(self):
         suits = sample(list(set(map(str.upper, Card.VALID_SUITS))), k=2)
         card1 = Card(choice(Card.VALID_RANKS), suits[0])
         card2 = Card(choice(Card.VALID_RANKS), suits[1])
-        self.assertNotEqual(card1.get_suit(), card2.get_suit())
+        self.assertNotEqual(card1.suit, card2.suit)
 
 
 if __name__ == '__main__':
