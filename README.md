@@ -1,7 +1,7 @@
 # Poker_Cards
 
 #### TODO:
-- add Ace-low Straight, Straight-Flush to _evaluate_hand
+- bug: breaking ties is inconsistent
 
 Python Poker Cards for Flask backend<br>
 
