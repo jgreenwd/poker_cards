@@ -94,7 +94,7 @@ class Hand:
         except IndexError:
             raise IndexError
 
-    def is_straight(self):
+    def _is_straight(self):
         """ :return: True if Hand is a Straight """
         # straight == Ranks of n, n-1, n-2, n-3, n-4
 
@@ -105,25 +105,20 @@ class Hand:
 
         return all((Rank(self[x].get_rank()) == Rank(self[x + 1].get_rank() + 1) for x in range(len(self) - 1)))
 
-    def is_flush(self):
+    def _is_flush(self):
         """ :return: True if Hand is a Flush """
         # flush == Suit(0) = Suit(1) .... = Suit(n)
         suit = self.get_cards()[0].get_suit()
         return all((card.get_suit() == suit for card in self.get_cards()[1:]))
 
-    @staticmethod
-    def _evaluate_hand(hand):
-        """ Determine value of the given hand.
-
-        :param hand: (Hand)
-        :return: (Rank)
-        """
-        if len(hand) == 0:
+    def evaluate_hand(self):
+        """ :return: Rank of Hand """
+        if len(self) == 0:
             return None
 
-        if len(hand) == 5:
-            straight = hand.is_straight()
-            flush = hand.is_flush()
+        if len(self) == 5:
+            straight = self._is_straight()
+            flush = self._is_flush()
 
             if straight and flush:
                 return Rank.STRAIGHT_FLUSH
@@ -133,7 +128,7 @@ class Hand:
                 return Rank.STRAIGHT
 
         # create a tuple of the ranks for each card in the hand
-        ranks = tuple(hand.get_cards().count(card) for card in hand.get_cards())
+        ranks = tuple(self.get_cards().count(card) for card in self.get_cards())
 
         if 4 in ranks:
             return Rank.FOUR_OF_A_KIND
@@ -147,7 +142,7 @@ class Hand:
         elif 2 in ranks and ranks.count(2) == 2:
             return Rank.ONE_PAIR
         else:
-            return hand.get_cards()[0].get_rank()
+            return self.get_cards()[0].get_rank()
 
     def _set_value(self):
         """ Set value (Rank) of Hand
