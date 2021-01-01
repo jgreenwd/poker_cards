@@ -47,7 +47,7 @@ class Hand:
 
         # split ties
         if self.value == other.value:
-            return self.get_cards() == other.get_cards()
+            return self._cards == other.get_cards()
 
         return False
 
@@ -58,11 +58,15 @@ class Hand:
         # split ties
         if self.value == other.value:
             # test for Ace-low straight
-            self.ace_lo = (self._is_straight()) and (self[0].rank == Rank.ACE) and (self[1].rank == Rank.FIVE)
+            lo_self = (self._is_straight()) and (self[0].rank == Rank.ACE) and (self[1].rank == Rank.FIVE)
+            lo_other = (other._is_straight()) and (other[0].rank == Rank.ACE) and (other[1].rank == Rank.FIVE)
 
-            if self.ace_lo and other.get_cards()[0].rank == Rank.SIX:
-                print(self.ace_lo, self, other)
+            if lo_self and other.get_cards()[0].rank >= Rank.SIX:
+                # print('self')
                 return True
+            elif lo_other and self._cards[0].rank >= Rank.SIX:
+            #     print('other')
+                return False
 
             # otherwise compare Ranks card by card (already sorted from _set_value)
             for a, b in zip(self, other):
@@ -112,8 +116,9 @@ class Hand:
     def _is_flush(self):
         """ :return: True if Hand is a Flush """
         # flush == Suit(0) = Suit(1) .... = Suit(n)
+
         suit = self._cards[0].suit
-        return all((card.suit == suit for card in self.get_cards()[1:]))
+        return all((card.suit == suit for card in self._cards[1:]))
 
     def evaluate_hand(self):
         """ :return: Rank of Hand """
@@ -132,7 +137,7 @@ class Hand:
                 return Rank.STRAIGHT
 
         # create a tuple of the ranks for each card in the hand
-        ranks = tuple(self.get_cards().count(card) for card in self.get_cards())
+        ranks = tuple(self._cards.count(card) for card in self._cards)
 
         if 4 in ranks:
             return Rank.FOUR_OF_A_KIND
@@ -146,7 +151,7 @@ class Hand:
         elif 2 in ranks and ranks.count(2) == 2:
             return Rank.ONE_PAIR
         else:
-            return self.get_cards()[0].rank
+            return self._cards[0].rank
 
     def _set_value(self):
         """ :return: Rank value of Hand """
