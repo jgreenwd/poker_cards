@@ -94,26 +94,22 @@ class Hand:
         except IndexError:
             raise IndexError
 
-    @staticmethod
-    def _is_straight(hand):
-        """ If hand is a Straight, return True
-
-        :param hand: (Hand)
-        :return: (Boolean)
-        """
+    def is_straight(self):
+        """ :return: True if Hand is a Straight """
         # straight == Ranks of n, n-1, n-2, n-3, n-4
-        return all((Rank(hand[x].get_rank()) == Rank(hand[x + 1].get_rank() + 1) for x in range(len(hand) - 1)))
 
-    @staticmethod
-    def _is_flush(hand):
-        """ If hand is a Flush, return True
+        # test for Ace-Low Straight
+        if ((self[0].get_rank() == Rank.ACE) and (self[1].get_rank() == Rank.FIVE) and (self[2].get_rank() == Rank.FOUR)
+                and (self[3].get_rank() == Rank.THREE) and (self[4].get_rank() == Rank.TWO)):
+            return True
 
-        :param hand: (Hand)
-        :return: (Boolean)
-        """
+        return all((Rank(self[x].get_rank()) == Rank(self[x + 1].get_rank() + 1) for x in range(len(self) - 1)))
+
+    def is_flush(self):
+        """ :return: True if Hand is a Flush """
         # flush == Suit(0) = Suit(1) .... = Suit(n)
-        suit = hand.get_cards()[0].get_suit()
-        return all((card.get_suit() == suit for card in hand.get_cards()[1:]))
+        suit = self.get_cards()[0].get_suit()
+        return all((card.get_suit() == suit for card in self.get_cards()[1:]))
 
     @staticmethod
     def _evaluate_hand(hand):
@@ -126,9 +122,8 @@ class Hand:
             return None
 
         if len(hand) == 5:
-            # Flushes, Straights, & Straight-Flushes are only possible in Hands of 5 Cards
-            straight = Hand._is_straight(hand)
-            flush = Hand._is_flush(hand)
+            straight = hand.is_straight()
+            flush = hand.is_flush()
 
             if straight and flush:
                 return Rank.STRAIGHT_FLUSH
