@@ -14,34 +14,26 @@ class Card:
         if suit.upper() not in Card.VALID_SUITS:
             raise ValueError(f'Invalid suit: {suit}')
 
-        self._rank = Rank(rank)
-        self._suit = suit.upper()
+        self.rank = Rank(rank)
+        self.suit = suit.upper()
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._rank}:{self._suit})'
+        return f'{self.__class__.__name__}({self.rank}:{self.suit})'
 
     def __str__(self):
-        if self._suit == 'S':
+        if self.suit == 'S':
             suit = 'Spades'
-        elif self._suit == 'H':
+        elif self.suit == 'H':
             suit = 'Hearts'
-        elif self._suit == 'C':
+        elif self.suit == 'C':
             suit = 'Clubs'
         else:
             suit = 'Diamonds'
 
-        return f'<{str(self._rank)[5:].title():5} of {suit:8}> '
+        return f'<{str(self.rank)[5:].title():5} of {suit:8}> '
 
     def __eq__(self, other):
-        return self._rank == other.get_rank()
+        return self.rank == other.rank
 
     def __lt__(self, other):
-        return self._rank < other.get_rank()
-
-    def get_rank(self):
-        """ :return: Card's (Rank) """
-        return self._rank
-
-    def get_suit(self):
-        """ :return: Card's Suit (String) """
-        return self._suit
+        return self.rank < other.rank

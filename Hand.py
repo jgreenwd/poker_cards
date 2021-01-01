@@ -52,24 +52,28 @@ class Hand:
         return False
 
     def __lt__(self, other):
-        if len(self._cards) != len(other):
+        if len(self) != len(other):
             raise ValueError(f'Hands must have equal length.')
 
         # split ties
         if self.value == other.value:
-            # compare card Ranks (already sorted from _set_value)
-            for a, b in zip(self.get_cards(), other.get_cards()):
+            # test for Ace-low straight
+            self.ace_lo = (self._is_straight()) and (self[0].rank == Rank.ACE) and (self[1].rank == Rank.FIVE)
+
+            if self.ace_lo and other.get_cards()[0].rank == Rank.SIX:
+                print(self.ace_lo, self, other)
+                return True
+
+            # otherwise compare Ranks card by card (already sorted from _set_value)
+            for a, b in zip(self, other):
                 if a < b:
                     return True
-
-            return False
 
         return self.value < other.value
 
     def get_cards(self):
-        """ Get reference to Cards in Hand
+        """ :return: reference to List of Cards in Hand """
 
-        :return: List(...Cards) """
         return self._cards
 
     def draw(self, card):
@@ -99,17 +103,17 @@ class Hand:
         # straight == Ranks of n, n-1, n-2, n-3, n-4
 
         # test for Ace-Low Straight
-        if ((self[0].get_rank() == Rank.ACE) and (self[1].get_rank() == Rank.FIVE) and (self[2].get_rank() == Rank.FOUR)
-                and (self[3].get_rank() == Rank.THREE) and (self[4].get_rank() == Rank.TWO)):
+        if ((self[0].rank == Rank.ACE) and (self[1].rank == Rank.FIVE) and (self[2].rank == Rank.FOUR)
+                and (self[3].rank == Rank.THREE) and (self[4].rank == Rank.TWO)):
             return True
 
-        return all((Rank(self[x].get_rank()) == Rank(self[x + 1].get_rank() + 1) for x in range(len(self) - 1)))
+        return all((Rank(self[x].rank) == Rank(self[x + 1].rank + 1) for x in range(len(self) - 1)))
 
     def _is_flush(self):
         """ :return: True if Hand is a Flush """
         # flush == Suit(0) = Suit(1) .... = Suit(n)
-        suit = self.get_cards()[0].get_suit()
-        return all((card.get_suit() == suit for card in self.get_cards()[1:]))
+        suit = self._cards[0].suit
+        return all((card.suit == suit for card in self.get_cards()[1:]))
 
     def evaluate_hand(self):
         """ :return: Rank of Hand """
@@ -142,18 +146,15 @@ class Hand:
         elif 2 in ranks and ranks.count(2) == 2:
             return Rank.ONE_PAIR
         else:
-            return self.get_cards()[0].get_rank()
+            return self.get_cards()[0].rank
 
     def _set_value(self):
-        """ Set value (Rank) of Hand
-
-        :return: (Rank)
-        """
+        """ :return: Rank value of Hand """
         if len(self._cards) == 0:
             return None
 
         # Sort Cards in Hand by Rank, then by count
-        self._cards = sorted(self._cards, reverse=True, key=lambda x: (self._cards.count(x), x.get_rank()))
+        self._cards = sorted(self._cards, reverse=True, key=lambda x: (self._cards.count(x), x.rank))
 
         # identify best possible 5-card hand from cards given
         # Flushes, Straights, & Straight-Flushes are only possible in Hands of 5 Cards
@@ -166,7 +167,7 @@ class Hand:
 
             combos = combinations(self._cards, 5)
 
-            best_result = self._cards[0].get_rank()
+            best_result = self._cards[0].rank
 
             for combo in combos:
                 h = Hand(*combo)
