@@ -164,16 +164,20 @@ class HandTest(unittest.TestCase):
     def test_less(self):
         # 5 card hands
         for i in range(0, 45):
-            self.assertTrue(test_hands[i] < test_hands[i + 3])
+            self.assertLess(test_hands[i], test_hands[i + 3])
+            self.assertGreater(test_hands[i + 3], test_hands[i])
         # 6 card hands
         for i in range(48, 54):
-            self.assertTrue(test_hands[i] < test_hands[i + 3])
+            self.assertLess(test_hands[i], test_hands[i + 3])
+            self.assertGreater(test_hands[i + 3], test_hands[i])
         # 7 card hands
         for i in range(57, 63):
-            self.assertTrue(test_hands[i] < test_hands[i + 3])
+            self.assertLess(test_hands[i], test_hands[i + 3])
+            self.assertGreater(test_hands[i + 3], test_hands[i])
         # edge case
         for i in range(66, 67):
-            self.assertTrue(test_hands[i] < test_hands[i + 2])
+            self.assertLess(test_hands[i], test_hands[i + 2])
+            self.assertGreater(test_hands[i + 2], test_hands[i])
 
 
 if __name__ == '__main__':
