@@ -153,23 +153,27 @@ class Hand:
             return None
 
         # Sort Cards in Hand by Rank, then by count
-        self._cards = sorted(self.get_cards(), reverse=True, key=lambda x: (self.get_cards().count(x), x.get_rank()))
+        self._cards = sorted(self._cards, reverse=True, key=lambda x: (self._cards.count(x), x.get_rank()))
 
         # identify best possible 5-card hand from cards given
-        if len(self.get_cards()) <= 5:
-            return Hand._evaluate_hand(self)
+        # Flushes, Straights, & Straight-Flushes are only possible in Hands of 5 Cards
+        # ie. no 6-card straights, just 2 straights in 1 hand eg. (2,3,4,5,6,7) == (2,3,4,5,6) and (3,4,5,6,7)
+        # so, return the higher scoring combination
+        if len(self._cards) <= 5:
+            return self.evaluate_hand()
         else:
             from itertools import combinations
 
-            combos = combinations(self.get_cards(), 5)
+            combos = combinations(self._cards, 5)
 
-            best_result = self.get_cards()[0].get_rank()
+            best_result = self._cards[0].get_rank()
 
             for combo in combos:
                 h = Hand(*combo)
-                temp_result = Hand._evaluate_hand(h)
+                temp_result = Hand.evaluate_hand(h)
 
                 if temp_result > best_result:
                     best_result = temp_result
+                # add test for high card with equal results
 
             return best_result
